@@ -92,33 +92,3 @@ def addToLibrary(filePath):
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #'https://www.youtube.com/watch?v=kJQP7kiw5Fk'
-
-    # ydl_info = youtube_dl.YoutubeDL(ydl_opts_info)
-    # ydl = youtube_dl.YoutubeDL(ydl_opts)
-
-    # with ydl_info:
-    #     result = ydl_info.extract_info(url,
-    #     	download=True)
-
-    # with ydl_info:
-    # 	result = ydl_info.extract_info(
-    #         url,
-    #         download=False # We just want to extract the info
-    #     )
