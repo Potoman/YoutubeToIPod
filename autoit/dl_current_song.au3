@@ -22,7 +22,7 @@ Func Go()
 
 	$variable = ClipGet() ; Get url from clipboard
 
-	Run("py C:\Users\LEPOT\Documents\script\tool-flac-2-mp3-keep-tag\dly.py " & $variable)
+	Run("py C:\Users\LEPOT\Documents\python\YoutubeToIPod\src\dly.py " & $variable)
 EndFunc
 
 Func Terminate()

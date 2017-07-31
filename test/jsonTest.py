@@ -17,7 +17,7 @@ ydl_opts_info = {
     'outtmpl': 'tmp.webm',
 }
 
-url = "https://www.youtube.com/watch?v=lHje9w7Ev4U"
+url = ""
 
 print("Url load : " + url)
 
