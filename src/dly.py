@@ -32,6 +32,9 @@ def initTag(filePath, title, artisteIsFirst):
 
     print("title : " + title)
 
+    title = title.replace("--", "-")
+    title = title.replace("lyrics", "")
+
     tabTitle = title.split("-")
 
     size = len(tabTitle)
