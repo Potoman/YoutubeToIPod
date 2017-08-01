@@ -1,9 +1,4 @@
-SET var = %cd%
-
 cd %YOUTUBE_2_IPOD%
 
-echo %cd%
+bind_keyboard.au3
 
-py %YOUTUBE_2_IPOD%\\dly.py %1
-
-cd %var%

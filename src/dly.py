@@ -1,76 +1,51 @@
-import youtube_dl
 import sys
 import os
-import json
 import re
 import time
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 
+from song import Song
+
 libraryPath = os.environ['IPOD_LIBRARY_AUTO']
 
 def main():
+    print("enter")
     if len(sys.argv) < 2:
         sys.exit("No url pass by parameter.")
-
+    print("enter")
     url = sys.argv[1]
-
+    artistFirst = sys.argv[2]
     print("Url load : " + url)
-
-    download(url)
-
+    song = download(url)
+    filePath = song.getFilePath()
+    initTag(filePath, song.title, artistFirst == "true" or artistFirst == "True")
+    addToLibrary(filePath)
     return
 
 def download(url):
+    return Song(url)
 
-    ydl_opts = {
-        #'outtmpl': 'tmp.webm',
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-    }
 
-    ydl_opts_info = {
-        'outtmpl': 'tmp.webm',
-    }
-
-    ydl = youtube_dl.YoutubeDL(ydl_opts)
-
-    with ydl:
-        result = ydl.extract_info(url, download=True)
-
-    if 'entries' in result:
-        video = result['entries'][0]
-    else:
-        video = result
-
-    array = json.dumps(video)
-    a = json.loads(array)
-
-    filePath = a['title'] + "-" + a['id'] + ".mp3"
+def initTag(filePath, title, artisteIsFirst):
     print("file : " + filePath)
 
-    title = a['title']
-    print(title)
+    print("title : " + title)
 
     tabTitle = title.split("-")
 
     size = len(tabTitle)
 
     if size == 0:
-        setTag(filePath, cleanTag(title.strip()))
+        setTag(filePath, title=cleanTag(title.strip()))
     elif size == 1:
-        setTag(filePath, title.strip())
+        setTag(filePath, title=title.strip())
     elif size >= 2:
-        setTag(filePath, artist=cleanTag(tabTitle[0]), title=cleanTag(tabTitle[1]))
+        indexArtiste = 0 if artisteIsFirst else 1
+        indexTitle = 1 if indexArtiste == 0 else 0
+        setTag(filePath, artist=cleanTag(tabTitle[indexArtiste]), title=cleanTag(tabTitle[indexTitle]))
     else:
         return -1
-
-    addToLibrary(filePath)
-
     return 0;
 
 def cleanTag(tag):
@@ -80,13 +55,8 @@ def cleanTag(tag):
     return tag
 
 def setTag(filePath, **tags):
-
     print("setTag on file : '" + filePath + "'")
-
     mf = MP3(filePath, ID3=EasyID3)
-
-    size = len(tags)
-
     for key, value in tags.items():
         print("key : " + key + ", value : " + value)
         try:
