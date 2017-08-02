@@ -15,6 +15,7 @@ def main():
         sys.exit("No url pass by parameter.")
     print("enter")
     url = sys.argv[1]
+    url = cleanUrl(url)
     artistFirst = sys.argv[2]
     print("Url load : " + url)
     song = download(url)
@@ -23,9 +24,11 @@ def main():
     addToLibrary(filePath)
     return
 
+def cleanUrl(url):
+    return url.split("&list=")[0]
+
 def download(url):
     return Song(url)
-
 
 def initTag(filePath, title, artisteIsFirst):
     print("file : " + filePath)

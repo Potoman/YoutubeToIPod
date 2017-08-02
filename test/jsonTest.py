@@ -1,55 +1,25 @@
 import youtube_dl
 import sys
 import json
+import unittest
 
+import dly
+from dly import cleanUrl
 
-ydl_opts = {
-    #'outtmpl': 'tmp.webm',
-    'format': 'bestaudio/best',
-    'postprocessors': [{
-        'key': 'FFmpegExtractAudio',
-        'preferredcodec': 'mp3',
-        #'preferredquality': '192',
-    }],
-}
+class TestStringMethods(unittest.TestCase):
 
-ydl_opts_info = {
-    'outtmpl': 'tmp.webm',
-}
+    def test_cleanUrl_noListInUrl(self):
+        urlPart0 = "https://www.youtube.com/watch?v=toto"
+        url = urlPart0
+        self.assertEqual(urlPart0, cleanUrl(url))
+        print("Ok with no list.")
 
-url = ""
+    def test_cleanUrl_listInUrl(self):
+        urlPart0 = "https://www.youtube.com/watch?v=toto"
+        urlPart1 = "tata"
+        url = urlPart0 + "&list=" + urlPart1
+        self.assertEqual(urlPart0, cleanUrl(url))
+        print("Ok with list.")
 
-print("Url load : " + url)
-
-ydl = youtube_dl.YoutubeDL(ydl_opts)
-
-with ydl:
-    result = ydl.extract_info(url, download=False)
-
-
-if 'entries' in result:
-    # Can be a playlist or a list of videos
-    video = result['entries'][0]
-else:
-    # Just a video
-    video = result
-
-array = json.dumps(video)
-a = json.loads(array)
-
-title = a['title']
-
-print(title)
-
-tabTitle = title.split("-")
-
-size = len(tabTitle)
-
-print(size)
-
-
-
-# video_url = video['url']
-# print(video_url)
-
-
+if __name__ == '__main__':
+    unittest.main()
