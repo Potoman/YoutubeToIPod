@@ -13,6 +13,7 @@ class Song:
         ydl_opts = {
                 #'outtmpl': 'tmp.webm',
                 'format': 'bestaudio/best',
+                'outtmpl': '%(id)s.%(ext)s',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
@@ -34,6 +35,8 @@ class Song:
         else:
             video = result
 
+        print(result)
+
         array = json.dumps(video)
         a = json.loads(array)
 
@@ -43,6 +46,6 @@ class Song:
         time.sleep(5)
 
     def getFilePath(self):
-        return self.title + "-" + self.youtubeId + ".mp3"
+        return self.youtubeId + ".mp3" #self.title + "-" + self.youtubeId + ".mp3"
 
 

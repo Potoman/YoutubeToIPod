@@ -31,10 +31,10 @@ def download(url):
     return Song(url)
 
 def initTag(filePath, title, artisteIsFirst):
-    print("file : " + filePath)
+    print("initTag > file : '" + filePath + "', title = '" + title + "'.")
 
-    print("title : " + title)
-
+    title = cleanTag(title.strip())
+    title = title.replace(":", "-")
     title = title.replace("--", "-")
     title = title.replace("lyrics", "")
 
@@ -45,7 +45,7 @@ def initTag(filePath, title, artisteIsFirst):
     if size == 0:
         setTag(filePath, title=cleanTag(title.strip()))
     elif size == 1:
-        setTag(filePath, title=title.strip())
+        setTag(filePath, title=cleanTag(title.strip()))
     elif size >= 2:
         indexArtiste = 0 if artisteIsFirst else 1
         indexTitle = 1 if indexArtiste == 0 else 0
