@@ -1,6 +1,7 @@
 import youtube_dl
 import json
 import time
+import logging
 
 class Song:
 
@@ -35,7 +36,7 @@ class Song:
         else:
             video = result
 
-        print(result)
+        logging.debug(result)
 
         array = json.dumps(video)
         a = json.loads(array)

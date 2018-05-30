@@ -2,27 +2,50 @@ import sys
 import os
 import re
 import time
+import logging, traceback
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 
 from song import Song
 
 libraryPath = os.environ['IPOD_LIBRARY_AUTO']
+LOGGER = logging.getLogger('YoutubeToIpod')
 
 def main():
-    print("enter")
-    if len(sys.argv) < 2:
-        sys.exit("No url pass by parameter.")
-    print("enter")
-    url = sys.argv[1]
-    url = cleanUrl(url)
-    artistFirst = sys.argv[2]
-    print("Url load : " + url)
-    song = download(url)
-    filePath = song.getFilePath()
-    initTag(filePath, song.title, artistFirst == "true" or artistFirst == "True")
-    addToLibrary(filePath)
-    return
+    try:
+        LOGGER.setLevel(logging.DEBUG)
+
+        fh = logging.FileHandler('log.txt')
+        fh.setLevel(logging.DEBUG)
+
+        ch = logging.StreamHandler()
+        ch.setLevel(logging.INFO)
+
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh.setFormatter(formatter)
+        ch.setFormatter(formatter)
+
+        LOGGER.addHandler(fh)
+        LOGGER.addHandler(ch)
+
+        LOGGER.info("dly-main")
+        if len(sys.argv) < 2:
+            LOGGER.error("No url pass by parameter.")
+            sys.exit("")
+        else:
+            LOGGER.info("ok for parameter size.")
+        url = sys.argv[1]
+        LOGGER.debug("url : " + url)
+        url = cleanUrl(url)
+        LOGGER.debug("url cleared : " + url)
+        artistFirst = sys.argv[2]
+        LOGGER.info("artistFirst : " + artistFirst)
+        song = download(url)
+        filePath = song.getFilePath()
+        initTag(filePath, song.title, artistFirst == "true" or artistFirst == "True")
+        addToLibrary(filePath)
+    except Exception as e:
+        LOGGER.error(traceback.format_exc())
 
 def cleanUrl(url):
     return url.split("&list=")[0]
@@ -31,7 +54,7 @@ def download(url):
     return Song(url)
 
 def initTag(filePath, title, artisteIsFirst):
-    print("initTag > file : '" + filePath + "', title = '" + title + "'.")
+    LOGGER.info("initTag > file : '" + filePath + "', title = '" + title + "'.")
 
     title = cleanTag(title.strip())
     title = title.replace(":", "-")
@@ -56,31 +79,28 @@ def initTag(filePath, title, artisteIsFirst):
 
 def cleanTag(tag):
     tag = re.sub(r'\([^)]*\)', '', tag).strip()
-    print("clean : '" + tag + "'")
+    LOGGER.info("clean : '" + tag + "'")
     tag = re.sub(r'\[[^)]*\]', '', tag).strip()
     return tag
 
 def setTag(filePath, **tags):
-    print("setTag on file : '" + filePath + "'")
+    LOGGER.info("setTag on file : '" + filePath + "'")
     mf = MP3(filePath, ID3=EasyID3)
     for key, value in tags.items():
-        print("key : " + key + ", value : " + value)
+        LOGGER.debug("key : " + key + ", value : " + value)
         try:
             mf[key] = value
         except:
             print("No " + key)
     mf.save()
-    print("setTag : ok")
-    return;
+    LOGGER.debug("setTag : ok")
 
 def addToLibrary(filePath):
-    print("Move file from : " + filePath + ", to " + libraryPath + "\\" + filePath)
+    LOGGER.debug("Move file from : " + filePath + ", to " + libraryPath + "\\" + filePath)
     try:
         os.rename(filePath, libraryPath + "\\" + filePath)
     except OSError as e:
         print(e)
-    time.sleep(5)
-    return
 
 if __name__ == "__main__":
     main()
