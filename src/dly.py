@@ -118,12 +118,12 @@ def set_tag(song, **tags):
 
 def add_to_library(song):
     try:
+        add_to_music(song)
         file_path = song.get_title_file_name()
         LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
-        add_to_music(song)
         copyfile(os.path.join(ITUNES_MUSIC_YOUTUBE, file_path), os.path.join(ITUNES_MUSIC_AUTOMATIC_ADD, file_path))
     except OSError as e:
-        print(e)
+        LOGGER.error(e)
 
 
 def add_to_music(song):
@@ -132,12 +132,13 @@ def add_to_music(song):
         LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_YOUTUBE)
         try:
             os.makedirs(ITUNES_MUSIC_YOUTUBE)
-        except FileExistsError:
+        except FileExistsError as fee:
             # directory already exists
+            LOGGER.error(fee)
             pass
         os.rename(file_path, os.path.join(ITUNES_MUSIC_YOUTUBE, song.get_title_file_name()))
     except OSError as e:
-        print(e)
+        LOGGER.error(e)
 
 
 if __name__ == "__main__":
