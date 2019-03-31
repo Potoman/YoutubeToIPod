@@ -5,6 +5,8 @@ HotKeySet("{ESC}", "Terminate")
 HotKeySet("{F7}", "GoArtistFirst")
 HotKeySet("{F8}", "GoTitleFirst")
 
+Global $PidPython
+
 While 1
     Sleep(100)
 WEnd
@@ -32,9 +34,11 @@ Func LaunchPythonScript($parameterIsArtistFirst)
 	Sleep(1000)
 	Send("^c") ; Copy url to clipboard
 	Sleep(1000)
-	$variable = ClipGet() ; Get url from clipboard
-	Run("py " & @ScriptDir & "\dly.py " & $variable & " " & $parameterIsArtistFirst)
+	Local $variable = ClipGet() ; Get url from clipboard
+	$PidPython = Run("py " & @ScriptDir & "\dly.py " & $variable & " " & $parameterIsArtistFirst)
 EndFunc
 
 Func Terminate()
+   ProcessClose($PidPython)
+   Exit 0
 EndFunc
