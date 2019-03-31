@@ -33,9 +33,8 @@ Func LaunchPythonScript($parameterIsArtistFirst)
 	Send("^c") ; Copy url to clipboard
 	Sleep(1000)
 	$variable = ClipGet() ; Get url from clipboard
-	Run("py C:\\Users\\LEPOT\\Documents\\python\\YoutubeToIPod\\src\\dly.py " & $variable & " " & $parameterIsArtistFirst)
+	Run("py " & @ScriptDir & "\dly.py " & $variable & " " & $parameterIsArtistFirst)
 EndFunc
 
 Func Terminate()
-    Exit
 EndFunc
