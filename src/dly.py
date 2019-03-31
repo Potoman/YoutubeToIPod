@@ -57,25 +57,26 @@ def download(url):
 
 
 def init_tag(song, artiste_is_first):
-    if hasattr(song, 'alt_title'):
+    if song.alt_title:
         init_tag_from_song(song)
     else:
         init_tag_from_title(song, artiste_is_first)
 
 
 def init_tag_from_song(song):
-    LOGGER.info("initTag > file : '" + song.get_file_name() + "', title = '" + song.title + "'.")
+    LOGGER.info("initTag > file : '" + song.get_id_file_name() + "', title = '" + song.title + "'.")
     set_tag(song, title=song.alt_title, artist=song.creator)
     return 0;
 
 
 def init_tag_from_title(song, artiste_is_first):
-    LOGGER.info("initTag > file : '" + song.get_file_name() + "', title = '" + song.title + "'.")
+    LOGGER.info("initTag > file : '" + song.get_id_file_name() + "', title = '" + song.title + "'.")
 
     title = clean_tag(song.title.strip())
     title = title.replace(":", "-")
     title = title.replace("--", "-")
     title = title.replace("lyrics", "")
+    title = title.replace("\"", "'")
 
     tab_title = title.split("-")
 
@@ -102,7 +103,7 @@ def clean_tag(tag):
 
 
 def set_tag(song, **tags):
-    file_path = song.get_file_name()
+    file_path = song.get_id_file_name()
     LOGGER.info("set_tag on file : '" + file_path + "'")
     mf = MP3(file_path, ID3=EasyID3)
     for key, value in tags.items():
@@ -117,8 +118,8 @@ def set_tag(song, **tags):
 
 def add_to_library(song):
     try:
-        file_path = song.get_file_name()
-        LOGGER.debug("Move file from : " + file_path + ", to " + ITUNES_MUSIC_AUTOMATIC_ADD)
+        file_path = song.get_title_file_name()
+        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
         add_to_music(song)
         copyfile(os.path.join(ITUNES_MUSIC_YOUTUBE, file_path), os.path.join(ITUNES_MUSIC_AUTOMATIC_ADD, file_path))
     except OSError as e:
@@ -127,14 +128,14 @@ def add_to_library(song):
 
 def add_to_music(song):
     try:
-        file_path = song.get_file_name()
-        LOGGER.debug("Move file from : " + file_path + ", to " + ITUNES_MUSIC_YOUTUBE)
+        file_path = song.get_id_file_name()
+        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_YOUTUBE)
         try:
             os.makedirs(ITUNES_MUSIC_YOUTUBE)
         except FileExistsError:
             # directory already exists
             pass
-        os.rename(file_path, os.path.join(ITUNES_MUSIC_YOUTUBE, file_path))
+        os.rename(file_path, os.path.join(ITUNES_MUSIC_YOUTUBE, song.get_title_file_name()))
     except OSError as e:
         print(e)
 

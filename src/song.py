@@ -1,5 +1,5 @@
 import youtube_dl
-import time
+import os
 import logging
 
 
@@ -9,7 +9,7 @@ class Song:
         self.url = url
         ydl_opts = {
                 'format': 'bestaudio/best',
-                'outtmpl': '%(title)s.%(ext)s',
+                'outtmpl': '%(id)s.%(ext)s',
                 'postprocessors': [{
                     'key': 'FFmpegExtractAudio',
                     'preferredcodec': 'mp3',
@@ -34,7 +34,8 @@ class Song:
         self.alt_title = video['alt_title']
         self.creator = video['creator']
 
-        time.sleep(5)
+    def get_id_file_name(self):
+        return self.id + ".mp3"
 
-    def get_file_name(self):
-        return self.title + ".mp3"
+    def get_title_file_name(self):
+        return os.path.normpath(self.title).replace("\"", "") + ".mp3"
