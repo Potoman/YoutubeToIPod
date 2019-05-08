@@ -66,7 +66,7 @@ def init_tag(song, artiste_is_first):
 def init_tag_from_song(song):
     LOGGER.info("initTag > file : '" + song.get_id_file_name() + "', title = '" + song.title + "'.")
     set_tag(song, title=song.alt_title, artist=song.creator)
-    return 0;
+    return 0
 
 
 def init_tag_from_title(song, artiste_is_first):
