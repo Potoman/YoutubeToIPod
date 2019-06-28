@@ -122,7 +122,8 @@ def add_to_library(song):
         file_path = song.get_title_file_name()
         LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
         copyfile(os.path.join(ITUNES_MUSIC_YOUTUBE, file_path), os.path.join(ITUNES_MUSIC_AUTOMATIC_ADD, file_path))
-    except OSError as e:
+        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
+    except Exception as e:
         LOGGER.error(e)
 
 
