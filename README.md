@@ -1,4 +1,4 @@
-https://github.com/Potoman/YoutubeToIPod/workflows/YoutubeToIPod/badge.svg
+(https://github.com/Potoman/YoutubeToIPod/workflows/YoutubeToIPod/badge.svg)
 
 # Explanation  
 
