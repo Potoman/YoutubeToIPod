@@ -1,4 +1,4 @@
-name: YoutubeToIPod
+name: Build and Test
 
 on:
   schedule:

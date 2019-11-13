@@ -1,4 +1,4 @@
-![](https://github.com/Potoman/YoutubeToIPod/workflows/YoutubeToIPod/badge.svg)
+![](https://github.com/Potoman/YoutubeToIPod/workflows/Build%20and%20Test/badge.svg)
 
 # Explanation  
 
