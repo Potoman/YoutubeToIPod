@@ -1,7 +1,6 @@
 import logging, unittest
 
-import dly
-from dly import clean_url
+import src.dly as dly
 
 dly.LOGGER.setLevel(logging.DEBUG)
 
@@ -18,14 +17,14 @@ class TestStringMethods(unittest.TestCase):
     def test_cleanUrl_noListInUrl(self):
         urlPart0 = "https://www.youtube.com/watch?v=toto"
         url = urlPart0
-        self.assertEqual(urlPart0, clean_url(url))
+        self.assertEqual(urlPart0, dly.clean_url(url))
         print("Ok with no list.")
 
     def test_cleanUrl_listInUrl(self):
         urlPart0 = "https://www.youtube.com/watch?v=toto"
         urlPart1 = "tata"
         url = urlPart0 + "&list=" + urlPart1
-        self.assertEqual(urlPart0, clean_url(url))
+        self.assertEqual(urlPart0, dly.clean_url(url))
         print("Ok with list.")
 
     def test_vevo_url(self):

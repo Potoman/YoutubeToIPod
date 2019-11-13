@@ -4,7 +4,7 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 from shutil import copyfile
 
-from song import Song
+from .song import Song
 
 ITUNES_ROOT_PATH = os.path.join(os.environ['HOMEPATH'], "Music", "iTunes", "iTunes Media")
 ITUNES_MUSIC_YOUTUBE = os.path.join(ITUNES_ROOT_PATH, "MUSIC", "Youtube")
