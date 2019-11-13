@@ -1,8 +1,17 @@
-import unittest
+import logging, unittest
 
 import dly
 from dly import clean_url
 
+dly.LOGGER.setLevel(logging.DEBUG)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+dly.LOGGER.addHandler(ch)
 
 class TestStringMethods(unittest.TestCase):
 
