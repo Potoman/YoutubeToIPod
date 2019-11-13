@@ -2,10 +2,10 @@ name: Python application
 
 
 on: push
+  schedule: "*/1 * * * *"
 
 jobs:
   build:
-    schedule: "*/1 * * * *"
 
     runs-on: ubuntu-latest
 
