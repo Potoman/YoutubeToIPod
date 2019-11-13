@@ -64,13 +64,13 @@ def init_tag(song, artiste_is_first):
 
 
 def init_tag_from_song(song):
-    LOGGER.info("initTag > file : '" + song.get_id_file_name() + "', title = '" + song.title + "'.")
+    LOGGER.info('init_tag_from_song > song : ' + song)
     set_tag(song, title=song.alt_title, artist=song.creator)
     return 0
 
 
 def init_tag_from_title(song, artiste_is_first):
-    LOGGER.info("initTag > file : '" + song.get_id_file_name() + "', title = '" + song.title + "'.")
+    LOGGER.info('init_tag_from_title > song : ' + song)
 
     title = clean_tag(song.title.strip())
     title = title.replace(":", "-")

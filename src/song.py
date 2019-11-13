@@ -39,3 +39,15 @@ class Song:
 
     def get_title_file_name(self):
         return self.title.replace("\"", "").replace("/", " ").replace("?", " ") + ".mp3"
+
+    def __str__(self):
+        return "song : id = '" + self.id \
+               + "', title = '" + self.title \
+               + "', alt_title = '" + self.alt_title \
+               + "', creator = '" + self.creator + "'."
+
+    def __add__(self, other):
+        return str(self) + other
+
+    def __radd__(self, other):
+        return other + str(self)
