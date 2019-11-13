@@ -41,7 +41,7 @@ class TestStringMethods(unittest.TestCase):
     def test_basic_url(self):
         url = "https://www.youtube.com/watch?v=qfqA1sTKhmw"
         song = dly.download(url)
-        self.assertEqual(song.creator, "Palmashow ")
+        self.assertEqual(song.creator, "Palmashow")
         self.assertEqual(song.alt_title, "Lartisto ft Lady Djadja 'trop de nanana'")
         self.assertEqual(song.get_id_file_name(), "qfqA1sTKhmw.mp3")
         self.assertEqual(song.get_title_file_name(), "Lartisto ft Lady Djadja 'trop de nanana' - Palmashow")
