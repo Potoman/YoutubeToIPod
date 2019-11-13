@@ -3,6 +3,7 @@ import logging, traceback
 from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 from shutil import copyfile
+from pathlib import Path
 
 from .song import Song
 
@@ -11,7 +12,7 @@ LOGGER = logging.getLogger('YoutubeToIpod')
 
 
 def get_itunes_root_path():
-    return os.path.join(os.environ['HOMEPATH'], "Music", "iTunes", "iTunes Media")
+    return os.path.join(Path.home(), "Music", "iTunes", "iTunes Media")
 
 
 def get_itunes_music_youtube():
