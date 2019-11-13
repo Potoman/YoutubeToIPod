@@ -30,20 +30,30 @@ class Song:
         logging.debug(result)
 
         self.id = video['id']
-        self.title = video['title']
-        self.alt_title = video['alt_title']
-        self.creator = video['creator']
+
+        self.creator = video['creator'] if video['artist'] is None else video['artist']
+        self.title = video['alt_title'] if video['track'] is None else video['track']
+
+        if self.creator is None:
+            self.creator = input("No creator is detected. Please write one :")
+        if self.title is None:
+            self.title = input("No title is detected. Please write one :")
 
     def get_id_file_name(self):
         return self.id + ".mp3"
 
     def get_title_file_name(self):
-        return self.title.replace("\"", "").replace("/", " ").replace("?", " ") + ".mp3"
+        return self.get_author() + " - " + self.get_title().replace("\"", "").replace("/", " ").replace("?", " ") + ".mp3"
+
+    def get_title(self):
+        return self.title
+
+    def get_author(self):
+        return self.creator
 
     def __str__(self):
         return "song : id = '" + self.id \
                + "', title = '" + self.title \
-               + "', alt_title = '" + self.alt_title \
                + "', creator = '" + self.creator + "'."
 
     def __add__(self, other):

@@ -1,4 +1,5 @@
 import logging, unittest
+import unittest.mock as mock
 
 import src.dly as dly
 
@@ -11,6 +12,17 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 ch.setFormatter(formatter)
 
 dly.LOGGER.addHandler(ch)
+
+
+def song_basic_generator():
+    song_basic = ["Palmashow", "Trop de nanana"]
+    for i in song_basic:
+        yield i
+
+song_basic = song_basic_generator()
+
+def mock_input(prompt):
+    return next(song_basic)
 
 class TestStringMethods(unittest.TestCase):
 
@@ -30,22 +42,23 @@ class TestStringMethods(unittest.TestCase):
     def test_vevo_url(self):
         url = "https://www.youtube.com/watch?v=MfTbHITdhEI"
         song = dly.download(url)
-        self.assertEqual(song.creator, "Eminem")
-        self.assertEqual(song.alt_title, "Fall")
+        self.assertEqual(song.get_author(), "Eminem")
+        self.assertEqual(song.get_title(), "Fall")
         self.assertEqual(song.get_id_file_name(), "MfTbHITdhEI.mp3")
-        self.assertEqual(song.get_title_file_name(), "Eminem - Fall")
+        self.assertEqual(song.get_title_file_name(), "Eminem - Fall.mp3")
         dly.init_tag(song, True)
         dly.add_to_music(song)
 
     def test_basic_url(self):
         url = "https://www.youtube.com/watch?v=qfqA1sTKhmw"
-        song = dly.download(url)
-        self.assertEqual(song.creator, "Palmashow")
-        self.assertEqual(song.alt_title, "Lartisto ft Lady Djadja 'trop de nanana'")
-        self.assertEqual(song.get_id_file_name(), "qfqA1sTKhmw.mp3")
-        self.assertEqual(song.get_title_file_name(), "Lartisto ft Lady Djadja 'trop de nanana' - Palmashow")
-        dly.init_tag(song, True)
-        dly.add_to_music(song)
+        with mock.patch('builtins.input', mock_input):
+            song = dly.download(url)
+            self.assertEqual(song.get_author(), "Palmashow")
+            self.assertEqual(song.get_title(), "Trop de nanana")
+            self.assertEqual(song.get_id_file_name(), "qfqA1sTKhmw.mp3")
+            self.assertEqual(song.get_title_file_name(), "Palmashow - Trop de nanana.mp3")
+            dly.init_tag(song, True)
+            dly.add_to_music(song)
 
 if __name__ == '__main__':
     unittest.main()

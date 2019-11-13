@@ -67,7 +67,7 @@ def download(url):
 
 
 def init_tag(song, artiste_is_first):
-    if song.alt_title:
+    if song.get_title():
         init_tag_from_song(song)
     else:
         init_tag_from_title(song, artiste_is_first)
@@ -75,14 +75,14 @@ def init_tag(song, artiste_is_first):
 
 def init_tag_from_song(song):
     LOGGER.info('init_tag_from_song > song : ' + song)
-    set_tag(song, title=song.alt_title, artist=song.creator)
+    set_tag(song, title=song.get_title(), artist=song.get_author())
     return 0
 
 
 def init_tag_from_title(song, artiste_is_first):
     LOGGER.info('init_tag_from_title > song : ' + song)
 
-    title = clean_tag(song.title.strip())
+    title = clean_tag(song.get_title().strip())
     title = title.replace(":", "-")
     title = title.replace("--", "-")
     title = title.replace("lyrics", "")
