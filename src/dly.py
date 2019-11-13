@@ -6,11 +6,21 @@ from shutil import copyfile
 
 from .song import Song
 
-ITUNES_ROOT_PATH = os.path.join(os.environ['HOMEPATH'], "Music", "iTunes", "iTunes Media")
-ITUNES_MUSIC_YOUTUBE = os.path.join(ITUNES_ROOT_PATH, "MUSIC", "Youtube")
-ITUNES_MUSIC_AUTOMATIC_ADD = os.path.join(ITUNES_ROOT_PATH, "Ajouter automatiquement à iTunes")
 
 LOGGER = logging.getLogger('YoutubeToIpod')
+
+
+def get_itunes_root_path():
+    return os.path.join(os.environ['HOMEPATH'], "Music", "iTunes", "iTunes Media")
+
+
+def get_itunes_music_youtube():
+    return os.path.join(get_itunes_root_path(), "MUSIC", "Youtube")
+
+
+def get_itunes_music_automatic_add():
+    return os.path.join(get_itunes_root_path(), "Ajouter automatiquement à iTunes")
+
 
 def main():
     try:
@@ -120,9 +130,9 @@ def add_to_library(song):
     try:
         add_to_music(song)
         file_path = song.get_title_file_name()
-        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
-        copyfile(os.path.join(ITUNES_MUSIC_YOUTUBE, file_path), os.path.join(ITUNES_MUSIC_AUTOMATIC_ADD, file_path))
-        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_AUTOMATIC_ADD)
+        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_automatic_add())
+        copyfile(os.path.join(get_itunes_music_youtube(), file_path), os.path.join(get_itunes_music_automatic_add(), file_path))
+        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_automatic_add())
     except Exception as e:
         LOGGER.error(e)
 
@@ -130,14 +140,14 @@ def add_to_library(song):
 def add_to_music(song):
     try:
         file_path = song.get_id_file_name()
-        LOGGER.debug("Move file '" + file_path + "' to " + ITUNES_MUSIC_YOUTUBE)
+        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_youtube())
         try:
-            os.makedirs(ITUNES_MUSIC_YOUTUBE)
+            os.makedirs(get_itunes_music_youtube())
         except FileExistsError as fee:
             # directory already exists
             LOGGER.debug(fee)
             pass
-        os.rename(file_path, os.path.join(ITUNES_MUSIC_YOUTUBE, song.get_title_file_name()))
+        os.rename(file_path, os.path.join(get_itunes_music_youtube(), song.get_title_file_name()))
     except OSError as e:
         LOGGER.error(e)
 
