@@ -135,7 +135,7 @@ def add_to_music(song):
             os.makedirs(ITUNES_MUSIC_YOUTUBE)
         except FileExistsError as fee:
             # directory already exists
-            LOGGER.error(fee)
+            LOGGER.debug(fee)
             pass
         os.rename(file_path, os.path.join(ITUNES_MUSIC_YOUTUBE, song.get_title_file_name()))
     except OSError as e:
