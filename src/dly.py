@@ -5,7 +5,7 @@ from mutagen.easyid3 import EasyID3
 from shutil import copyfile
 from pathlib import Path
 
-from .song import Song
+from src.song import Song
 
 
 LOGGER = logging.getLogger('YoutubeToIpod')
