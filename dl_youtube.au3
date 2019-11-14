@@ -4,8 +4,7 @@
 #include <Misc.au3>
 
 HotKeySet("{ESC}", "Terminate")
-HotKeySet("{F7}", "GoArtistFirst")
-HotKeySet("{F8}", "GoTitleFirst")
+HotKeySet("{F7}", "GoDl")
 HotKeySet("{F9}", "GoToUpdateYoutubeDl")
 
 While 1
@@ -22,21 +21,13 @@ Func RunSyncProcess($cmd)
 	_FileWriteLog($filePath, $output)
 EndFunc
 
-Func GoArtistFirst()
+Func GoDl()
 	While _IsPressed("{F7}")
 		Sleep(10)
 	WEnd
 	Sleep(1000)
-	LaunchPythonScript("true")
-EndFunc
-
-Func GoTitleFirst()
-	While _IsPressed("{F8}")
-		Sleep(10)
-	WEnd
-	Sleep(1000)
-	LaunchPythonScript("false")
-EndFunc
+	LaunchPythonScript()
+ EndFunc
 
 Func GoToUpdateYoutubeDl()
 	While _IsPressed("{F9}")
@@ -47,15 +38,15 @@ Func GoToUpdateYoutubeDl()
 	Exit 0
 EndFunc
 
-Func LaunchPythonScript($parameterIsArtistFirst)
-	ConsoleWrite("LaunchPythonScript : " + $parameterIsArtistFirst)
+Func LaunchPythonScript()
+	ConsoleWrite("LaunchPythonScript")
 	ClipPut("")
 	Send("^l") ; Width Chrome, that select address toolbar.
 	Sleep(1000)
 	Send("^c") ; Copy url to clipboard
 	Sleep(1000)
 	Local $variable = ClipGet() ; Get url from clipboard
-	RunSyncProcess("py " & @ScriptDir & "\main.py " & $variable & " " & $parameterIsArtistFirst)
+	RunSyncProcess("py " & @ScriptDir & "\main.py " & $variable)
 EndFunc
 
 Func Terminate()
