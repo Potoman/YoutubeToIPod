@@ -55,7 +55,7 @@ Func LaunchPythonScript($parameterIsArtistFirst)
 	Send("^c") ; Copy url to clipboard
 	Sleep(1000)
 	Local $variable = ClipGet() ; Get url from clipboard
-	RunSyncProcess("py " & @ScriptDir & "\dly.py " & $variable & " " & $parameterIsArtistFirst)
+	RunSyncProcess("py " & @ScriptDir & "\main.py " & $variable & " " & $parameterIsArtistFirst)
 EndFunc
 
 Func Terminate()
