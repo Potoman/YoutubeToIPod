@@ -50,10 +50,8 @@ def main():
         LOGGER.debug("url : " + url)
         url = clean_url(url)
         LOGGER.debug("url cleared : " + url)
-        artiste_is_first = sys.argv[2]
-        LOGGER.info("artistFirst : " + artiste_is_first)
         song = download(url)
-        init_tag(song,  True if artiste_is_first else False)
+        init_tag(song)
         add_to_library(song)
     except Exception as e:
         LOGGER.error(traceback.format_exc())
@@ -67,44 +65,10 @@ def download(url):
     return Song(url)
 
 
-def init_tag(song, artiste_is_first):
-    if song.get_title():
-        init_tag_from_song(song)
-    else:
-        init_tag_from_title(song, artiste_is_first)
-
-
-def init_tag_from_song(song):
+def init_tag(song):
     LOGGER.info('init_tag_from_song > song : ' + song)
     set_tag(song, title=song.get_title(), artist=song.get_author())
     return 0
-
-
-def init_tag_from_title(song, artiste_is_first):
-    LOGGER.info('init_tag_from_title > song : ' + song)
-
-    title = clean_tag(song.get_title().strip())
-    title = title.replace(":", "-")
-    title = title.replace("--", "-")
-    title = title.replace("lyrics", "")
-    title = title.replace("\"", "'")
-
-    tab_title = title.split("-")
-
-    size = len(tab_title)
-
-    if size == 0:
-        set_tag(song, title=clean_tag(title.strip()))
-    elif size == 1:
-        set_tag(song, title=clean_tag(title.strip()))
-    elif size >= 2:
-        index_artiste = 0 if artiste_is_first else 1
-        index_title = 1 if index_artiste == 0 else 0
-        set_tag(song, artist=clean_tag(tab_title[index_artiste]), title=clean_tag(tab_title[index_title]))
-    else:
-        return -1
-    return 0;
-
 
 def clean_tag(tag):
     tag = re.sub(r'\([^)]*\)', '', tag).strip()

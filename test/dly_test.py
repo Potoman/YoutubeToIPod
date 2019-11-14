@@ -46,7 +46,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(song.get_title(), "Fall")
         self.assertEqual(song.get_id_file_name(), "MfTbHITdhEI.mp3")
         self.assertEqual(song.get_title_file_name(), "Eminem - Fall.mp3")
-        dly.init_tag(song, True)
+        dly.init_tag(song)
         dly.add_to_music(song)
 
     def test_basic_url(self):
@@ -57,7 +57,7 @@ class TestStringMethods(unittest.TestCase):
             self.assertEqual(song.get_title(), "Trop de nanana")
             self.assertEqual(song.get_id_file_name(), "qfqA1sTKhmw.mp3")
             self.assertEqual(song.get_title_file_name(), "Palmashow - Trop de nanana.mp3")
-            dly.init_tag(song, True)
+            dly.init_tag(song)
             dly.add_to_music(song)
 
 if __name__ == '__main__':
