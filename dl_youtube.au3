@@ -12,13 +12,8 @@ While 1
 WEnd
 
 Func RunSyncProcess($cmd)
-	Local $pid = Run($cmd, "", @SW_HIDE, $STDOUT_CHILD + $STDERR_CHILD)
+	Local $pid = Run($cmd)
 	ProcessWaitClose($pid)
-	Local $output = StdoutRead($pid)
-	ConsoleWrite($cmd & " > " & $output & @LF)
-	$filePath = @ScriptDir & "\dl_youtube_autoit.log"
-	FileDelete($filePath)
-	_FileWriteLog($filePath, $output)
 EndFunc
 
 Func GoDl()
