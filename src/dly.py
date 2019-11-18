@@ -23,6 +23,12 @@ def get_itunes_music_automatic_add():
     return os.path.join(get_itunes_root_path(), "Ajouter automatiquement à iTunes")
 
 
+def clean_file(file_path):
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+        LOGGER.debug("File deleted : " + file_path)
+
+
 def main():
     try:
         LOGGER.setLevel(logging.DEBUG)
@@ -95,26 +101,32 @@ def add_to_library(song):
     try:
         add_to_music(song)
         file_path = song.get_title_file_name()
-        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_automatic_add())
-        copyfile(os.path.join(get_itunes_music_youtube(), file_path), os.path.join(get_itunes_music_automatic_add(), file_path))
-        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_automatic_add())
+        dest = os.path.join(get_itunes_music_automatic_add(), file_path)
+        LOGGER.debug("add_to_library : clean file '" + dest)
+        clean_file(dest)
+        src = os.path.join(get_itunes_music_youtube(), file_path)
+        LOGGER.debug("add_to_library : move file '" + src + "' to " + dest)
+        copyfile(src, dest)
     except Exception as e:
-        LOGGER.error(e)
+        LOGGER.error("add_to_library " + str(e))
 
 
 def add_to_music(song):
     try:
         file_path = song.get_id_file_name()
-        LOGGER.debug("Move file '" + file_path + "' to " + get_itunes_music_youtube())
         try:
             os.makedirs(get_itunes_music_youtube())
         except FileExistsError as fee:
             # directory already exists
             LOGGER.debug(fee)
             pass
-        os.rename(file_path, os.path.join(get_itunes_music_youtube(), song.get_title_file_name()))
+        dest = os.path.join(get_itunes_music_youtube(), song.get_title_file_name())
+        LOGGER.debug("add_to_music : clean file '" + dest)
+        clean_file(dest)
+        LOGGER.debug("add_to_music : move file '" + file_path + "' to " + dest)
+        os.rename(file_path, dest)
     except OSError as e:
-        LOGGER.error(e)
+        LOGGER.error("add_to_music " + str(e))
 
 
 if __name__ == "__main__":
