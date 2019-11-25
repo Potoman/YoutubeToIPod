@@ -60,5 +60,15 @@ class TestStringMethods(unittest.TestCase):
             dly.init_tag(song)
             dly.add_to_music(song)
 
+    def test_song_with_wrong_character(self):
+        url = "https://www.youtube.com/watch?v=FwUrbzh2qzA"
+        song = dly.download(url)
+        dly.init_tag(song)
+        dly.add_to_music(song)
+        self.assertEqual(song.get_author(), "Kool Shen / Akhenaton / Lino / Disiz la Peste / Nekfeu / Sneazzy / Sadek / Still Fresh / S.Pri Noir / Taïro / Nessbeal / Soprano / Dry")
+        self.assertEqual(song.get_title(), "Marche")
+        self.assertEqual(song.get_id_file_name(), "FwUrbzh2qzA.mp3")
+        self.assertEqual(song.get_title_file_name(), "Kool Shen   Akhenaton   Lino   Disiz la Peste   Nekfeu   Sneazzy   Sadek   Still Fresh   S.Pri Noir   Taïro   Nessbeal   Soprano   Dry - Marche.mp3")
+
 if __name__ == '__main__':
     unittest.main()
