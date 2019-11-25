@@ -109,6 +109,7 @@ def add_to_library(song):
         copyfile(src, dest)
     except Exception as e:
         LOGGER.error("add_to_library " + str(e))
+        raise e
 
 
 def add_to_music(song):
@@ -127,6 +128,7 @@ def add_to_music(song):
         os.rename(file_path, dest)
     except OSError as e:
         LOGGER.error("add_to_music " + str(e))
+        raise e
 
 
 if __name__ == "__main__":
