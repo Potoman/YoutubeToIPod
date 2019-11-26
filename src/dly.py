@@ -60,7 +60,7 @@ def main():
         song = download(url)
         init_tag(song)
         add_to_library(song)
-    except Exception as e:
+    except Exception:
         LOGGER.error(traceback.format_exc())
         time.sleep(10)
 
