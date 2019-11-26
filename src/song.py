@@ -42,7 +42,16 @@ class Song:
         return self.id + ".mp3"
 
     def get_title_file_name(self):
-        return (self.get_author() + " - " + self.get_title() + ".mp3").replace("\"", "").replace("/", " ").replace("?", " ")
+        return (self.get_author() + " - " + self.get_title() + ".mp3")\
+            .replace("\\", " ")\
+            .replace("/", " ")\
+            .replace(":", " ")\
+            .replace("*", " ")\
+            .replace("?", " ")\
+            .replace("\"", "")\
+            .replace("<", " ")\
+            .replace(">", " ")\
+            .replace("|", " ")
 
     def get_title(self):
         return self.title
