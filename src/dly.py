@@ -4,6 +4,7 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 from shutil import copyfile
 from pathlib import Path
+import time
 
 from .song import Song
 
@@ -61,6 +62,7 @@ def main():
         add_to_library(song)
     except Exception as e:
         LOGGER.error(traceback.format_exc())
+        time.sleep(10)
 
 
 def clean_url(url):
