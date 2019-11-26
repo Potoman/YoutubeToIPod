@@ -78,6 +78,7 @@ def init_tag(song):
     set_tag(song, title=song.get_title(), artist=song.get_author())
     return 0
 
+
 def clean_tag(tag):
     tag = re.sub(r'\([^)]*\)', '', tag).strip()
     LOGGER.info("clean : '" + tag + "'")
