@@ -70,5 +70,13 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(song.get_id_file_name(), "FwUrbzh2qzA.mp3")
         self.assertEqual(song.get_title_file_name(), "Kool Shen   Akhenaton   Lino   Disiz la Peste   Nekfeu   Sneazzy   Sadek   Still Fresh   S.Pri Noir   Taïro   Nessbeal   Soprano   Dry - Marche.mp3")
 
+    def test_complexe_url(self):
+        id = "7SwfwMxUVGI"
+        clean_url = "https://www.youtube.com/watch?v=" + id
+        bad_url = clean_url + "&list=" + id + "&start_radio=1"
+        self.assertEqual(dly.url_to_id(bad_url), id)
+        self.assertEqual(dly.id_to_url(id), clean_url)
+        self.assertEqual(dly.clean_url(bad_url), clean_url)
+
 if __name__ == '__main__':
     unittest.main()

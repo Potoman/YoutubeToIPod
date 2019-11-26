@@ -4,6 +4,7 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 from shutil import copyfile
 from pathlib import Path
+import urllib.parse as urllibparse
 import time
 
 from .song import Song
@@ -65,8 +66,17 @@ def main():
         time.sleep(10)
 
 
+def url_to_id(url):
+    parsed = urllibparse.urlparse(url)
+    return urllibparse.parse_qs(parsed.query)['v'][0]
+
+
+def id_to_url(id):
+    return "https://www.youtube.com/watch?v=" + id
+
+
 def clean_url(url):
-    return url.split("&list=")[0]
+    return id_to_url(url_to_id(url))
 
 
 def download(url):
