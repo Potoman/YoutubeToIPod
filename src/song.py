@@ -4,7 +4,7 @@ import logging
 
 class Song:
 
-    def __init__(self, url):
+    def __init__(self, url: str):
         self.url = url
         ydl_opts = {
                 'format': 'bestaudio/best',
@@ -38,10 +38,10 @@ class Song:
         if self.title is None:
             self.title = input("No title is detected. Please write one :")
 
-    def get_id_file_name(self):
+    def get_id_file_name(self) -> str:
         return self.id + ".mp3"
 
-    def get_title_file_name(self):
+    def get_title_file_name(self) -> str:
         return (self.get_author() + " - " + self.get_title() + ".mp3")\
             .replace("\\", " ")\
             .replace("/", " ")\
@@ -53,10 +53,10 @@ class Song:
             .replace(">", " ")\
             .replace("|", " ")
 
-    def get_title(self):
+    def get_title(self) -> str:
         return self.title
 
-    def get_author(self):
+    def get_author(self) -> str:
         return self.creator
 
     def __str__(self):

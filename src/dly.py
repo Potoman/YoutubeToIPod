@@ -13,19 +13,19 @@ from .song import Song
 LOGGER = logging.getLogger('YoutubeToIpod')
 
 
-def get_itunes_root_path():
+def get_itunes_root_path() -> str:
     return os.path.join(Path.home(), "Music", "iTunes", "iTunes Media")
 
 
-def get_itunes_music_youtube():
+def get_itunes_music_youtube() -> str:
     return os.path.join(get_itunes_root_path(), "MUSIC", "Youtube")
 
 
-def get_itunes_music_automatic_add():
+def get_itunes_music_automatic_add() -> str:
     return os.path.join(get_itunes_root_path(), "Ajouter automatiquement à iTunes")
 
 
-def clean_file(file_path):
+def clean_file(file_path) -> None:
     if os.path.isfile(file_path):
         os.remove(file_path)
         LOGGER.debug("File deleted : " + file_path)
@@ -68,36 +68,36 @@ def main():
         time.sleep(10)
 
 
-def url_to_id(url):
+def url_to_id(url: str) -> str:
     parsed = urllibparse.urlparse(url)
     return urllibparse.parse_qs(parsed.query)['v'][0]
 
 
-def id_to_url(id):
+def id_to_url(id: str) -> str:
     return "https://www.youtube.com/watch?v=" + id
 
 
-def clean_url(url):
+def clean_url(url: str) -> str:
     return id_to_url(url_to_id(url))
 
 
-def download(url):
+def download(url: str) -> Song:
     return Song(url)
 
 
-def init_tag(song):
+def init_tag(song: Song) -> None:
     LOGGER.info('init_tag_from_song > song : ' + song)
     set_tag(song, title=song.get_title(), artist=song.get_author())
 
 
-def clean_tag(tag):
+def clean_tag(tag: str) -> str:
     tag = re.sub(r'\([^)]*\)', '', tag).strip()
     LOGGER.info("clean : '" + tag + "'")
     tag = re.sub(r'\[[^)]*\]', '', tag).strip()
     return tag
 
 
-def set_tag(song, **tags):
+def set_tag(song: Song, **tags) -> None:
     file_path = song.get_id_file_name()
     LOGGER.info("set_tag on file : '" + file_path + "'")
     mf = MP3(file_path, ID3=EasyID3)
@@ -111,7 +111,7 @@ def set_tag(song, **tags):
     LOGGER.debug("set_tag : ok")
 
 
-def add_to_library(song):
+def add_to_library(song: Song) -> None:
     try:
         add_to_music(song)
         file_path = song.get_title_file_name()
@@ -126,7 +126,7 @@ def add_to_library(song):
         raise e
 
 
-def add_to_music(song):
+def add_to_music(song: Song) -> None:
     try:
         file_path = song.get_id_file_name()
         try:
