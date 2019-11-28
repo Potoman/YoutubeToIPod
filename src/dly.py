@@ -86,7 +86,6 @@ def download(url):
 def init_tag(song):
     LOGGER.info('init_tag_from_song > song : ' + song)
     set_tag(song, title=song.get_title(), artist=song.get_author())
-    return 0
 
 
 def clean_tag(tag):
