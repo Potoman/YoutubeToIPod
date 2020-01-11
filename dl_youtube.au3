@@ -30,7 +30,6 @@ Func GoToUpdateYoutubeDl()
 	WEnd
 	Sleep(1000)
 	RunSyncProcess("pip install -U youtube-dl")
-	Exit 0
 EndFunc
 
 Func LaunchPythonScript()
