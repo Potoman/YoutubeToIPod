@@ -6,6 +6,7 @@ from shutil import copyfile
 from pathlib import Path
 import urllib.parse as urllibparse
 import time
+from win10toast import ToastNotifier
 
 from .song import Song
 
@@ -32,38 +33,38 @@ def clean_file(file_path) -> None:
 
 
 def main():
+    LOGGER.setLevel(logging.DEBUG)
+
+    fh = logging.FileHandler('log.txt')
+    fh.setLevel(logging.DEBUG)
+
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+
+    LOGGER.addHandler(fh)
+    LOGGER.addHandler(ch)
+
+    LOGGER.info("dly-main")
+    if len(sys.argv) < 2:
+        LOGGER.error("No url pass by parameter.")
+        sys.exit("")
+    else:
+        LOGGER.info("ok for parameter size.")
+    url = sys.argv[1]
+    LOGGER.debug("url : " + url)
     try:
-        LOGGER.setLevel(logging.DEBUG)
-
-        fh = logging.FileHandler('log.txt')
-        fh.setLevel(logging.DEBUG)
-
-        ch = logging.StreamHandler()
-        ch.setLevel(logging.INFO)
-
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        fh.setFormatter(formatter)
-        ch.setFormatter(formatter)
-
-        LOGGER.addHandler(fh)
-        LOGGER.addHandler(ch)
-
-        LOGGER.info("dly-main")
-        if len(sys.argv) < 2:
-            LOGGER.error("No url pass by parameter.")
-            sys.exit("")
-        else:
-            LOGGER.info("ok for parameter size.")
-        url = sys.argv[1]
-        LOGGER.debug("url : " + url)
         url = clean_url(url)
         LOGGER.debug("url cleared : " + url)
         song = download(url)
         init_tag(song)
         add_to_library(song)
-        LOGGER.info("SUCCESS")
-        time.sleep(5)
+        toast_success(song)
     except Exception:
+        toast_error(url)
         LOGGER.error(traceback.format_exc())
         time.sleep(10)
 
@@ -143,6 +144,16 @@ def add_to_music(song: Song) -> None:
     except OSError as e:
         LOGGER.error("add_to_music " + str(e))
         raise e
+
+
+def toast_success(song: Song) -> None:
+    toaster = ToastNotifier()
+    toaster.show_toast("YoutubeToIPod : Success", "The song '" + song.get_title() + "' by '" + song.get_author() + "' is download.")
+
+
+def toast_error(url: str) -> None:
+    toaster = ToastNotifier()
+    toaster.show_toast("YoutubeToIPod : Error", "The song at url '" + url + "' fail to be downloaded.")
 
 
 if __name__ == "__main__":
