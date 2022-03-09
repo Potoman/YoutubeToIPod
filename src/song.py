@@ -30,8 +30,21 @@ class Song:
 
         self.id = video['id']
 
-        self.creator = video['creator'] if video['artist'] is None else video['artist']
-        self.title = video['alt_title'] if video['track'] is None else video['track']
+        # Looking for the artist :
+        if 'artist' in video and video['artist'] is not None:
+            self.creator = video['artist']
+        elif 'creator' in video and video['creator'] is not None:
+            self.creator = video['creator']
+        else:
+            self.creator = 'Unknown'
+
+        # Looking for the track title :
+        if 'track' in video and video['track'] is not None:
+            self.title = video['track']
+        elif 'alt_title' in video and video['alt_title'] is not None:
+            self.title = video['alt_title']
+        else:
+            self.title = 'Unknown'
 
         if self.creator is None:
             self.creator = input("No creator is detected. Please write one :")
